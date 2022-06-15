@@ -101,5 +101,29 @@ mod tests {
     }
 
     #[test]
-    fn delete() {}
+    fn delete_min_tag() {
+        let mut map = new();
+        let a1 = Principal::from_slice(&[1, 2]);
+        let a2 = Principal::from_slice(&[2, 2]);
+        let a3 = Principal::from_slice(&[3, 2]);
+        let a4 = Principal::from_slice(&[4, 2]);
+        let a5 = Principal::from_slice(&[5, 2]);
+        let min = Principal::from_slice(&[]);
+        let max = Principal::from_slice(&[
+            255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+            255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+        ]);
+
+        assert_eq!(map.insert(a1, 100, (100, None)), None);
+        assert_eq!(map.insert(a2, 200, (200, None)), None);
+        assert_eq!(map.insert(a3, 300, (300, None)), None);
+        assert_eq!(map.insert(a4, 400, (400, None)), None);
+        assert_eq!(map.insert(a5, 500, (500, Some(a5))), None);
+        assert_eq!(map.insert(min, 500, (500, Some(min))), None);
+        assert_eq!(map.insert(max, 500, (500, Some(max))), None);
+
+        for _ in 0..10 {
+            println!("{:?}", map.delete_min_tag());
+        }
+    }
 }
